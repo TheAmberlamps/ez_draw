@@ -4,10 +4,14 @@ function setup() {
 
   // Add a white background to the canvas
   background(255);
-  console.log("well something's working");
 }
 
-const path = [];
+const paths = [];
+let currentPath = [];
+
+const colorInput = document.getElementById("color");
+const weight = document.getElementById("weight");
+const clear = document.getElementById("clear");
 
 function draw() {
   // disable filling
@@ -17,15 +21,31 @@ function draw() {
     // store mouse location
     const point = {
       x: mouseX,
-      y: mouseY
+      y: mouseY,
+      color: colorInput.value,
+      weight: weight.value
     };
-    path.push(point);
+    currentPath.push(point);
   }
 
-  beginShape();
-  path.forEach(point => {
+  paths.forEach(path => {
     //create a vertex at the specified location
-    vertex(point.x, point.y);
+    beginShape();
+    path.forEach(point => {
+      stroke(point.color);
+      strokeWeight(point.weight);
+      vertex(point.x, point.y);
+    });
+    endShape();
   });
-  endShape();
+}
+
+clear.addEventListener("click", () => {
+  paths.splice(0);
+  background(255);
+});
+
+function mousePressed() {
+  currentPath = [];
+  paths.push(currentPath);
 }
