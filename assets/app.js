@@ -17,15 +17,23 @@ function draw() {
   // disable filling
   noFill();
 
+  let rnd = document.getElementById("round");
+
+  let sqr = document.getElementById("square");
+
   if (mouseIsPressed) {
     // store mouse location
     const point = {
       x: mouseX,
       y: mouseY,
       color: colorInput.value,
-      weight: weight.value
+      weight: weight.value,
+      brush: rnd.checked
     };
     currentPath.push(point);
+    console.log("Round: " + rnd.checked);
+    console.log("Square: " + sqr.checked);
+    console.log(point.brush);
   }
 
   paths.forEach(path => {
@@ -34,7 +42,12 @@ function draw() {
     path.forEach(point => {
       stroke(point.color);
       strokeWeight(point.weight);
-      vertex(point.x, point.y);
+      if (point.brush === true) {
+        vertex(point.x, point.y);
+      } else {
+        // vertex(point.x, point.y);
+        square(point.x, point.y, point.weight);
+      }
     });
     endShape();
   });
