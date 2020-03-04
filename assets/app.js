@@ -9,13 +9,25 @@ function setup() {
 const paths = [];
 let currentPath = [];
 
-const colorInput = document.getElementById("color");
+let colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
 const clear = document.getElementById("clear");
+const opacity = document.getElementById("opacity");
 
 function draw() {
   // disable filling
   noFill();
+
+  var rgbaCol =
+    "rgba(" +
+    parseInt(colorInput.value.slice(-6, -4), 16) +
+    "," +
+    parseInt(colorInput.value.slice(-4, -2), 16) +
+    "," +
+    parseInt(colorInput.value.slice(-2), 16) +
+    "," +
+    opacity.value +
+    ")";
 
   let rnd = document.getElementById("round");
 
@@ -26,14 +38,12 @@ function draw() {
     const point = {
       x: mouseX,
       y: mouseY,
-      color: colorInput.value,
+      color: rgbaCol,
       weight: weight.value,
       brush: rnd.checked
     };
+    console.log(point.color);
     currentPath.push(point);
-    console.log("Round: " + rnd.checked);
-    console.log("Square: " + sqr.checked);
-    console.log(point.brush);
   }
 
   paths.forEach(path => {
@@ -42,6 +52,7 @@ function draw() {
     path.forEach(point => {
       stroke(point.color);
       strokeWeight(point.weight);
+      // setAlpha(point.opacity);
       if (point.brush === true) {
         vertex(point.x, point.y);
       } else {
