@@ -54,14 +54,15 @@ function draw() {
       strokeWeight(point.weight);
       // setAlpha(point.opacity);
       if (point.brush === true) {
+        strokeCap(ROUND);
+        strokeJoin(ROUND);
         vertex(point.x, point.y);
       } else {
-        // vertex(point.x, point.y);
+        strokeCap(SQUARE);
+        strokeJoin(MITER);
         square(point.x, point.y, point.weight);
       }
     });
-    strokeCap(ROUND);
-    strokeJoin(ROUND);
     endShape();
   });
 }
