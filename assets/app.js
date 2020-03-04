@@ -60,6 +60,8 @@ function draw() {
         square(point.x, point.y, point.weight);
       }
     });
+    strokeCap(ROUND);
+    strokeJoin(ROUND);
     endShape();
   });
 }
