@@ -29,6 +29,8 @@ function hiLite() {
   console.log("target.classlist: " + target.classList);
   target.classList.add("bingo");
   console.log("target.classList: " + target.classList);
+  target.classList.remove("bingo");
+  console.log("target.classList: " + target.classList);
   if (target.class === undefined) {
     target.class = "selected";
   } else if (target.class === "selected") {
