@@ -9,10 +9,35 @@ function setup() {
 const paths = [];
 let currentPath = [];
 
+const shapes = [];
+let currentShape = [];
+
 let colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
 const clear = document.getElementById("clear");
 const opacity = document.getElementById("opacity");
+const circ = document.getElementById("circ");
+
+// highlight function to let you know what brush / shape you're currently using ~~~ ACTUALLY, this should be used primarily as a tool selector and THEN as a way to highlight that selection.
+function hiLite() {
+  console.log("Clicked me!");
+  // let old = document.querySelectorAll(".selected");
+  // console.log(old);
+  let target = event.target;
+  console.log("target: " + target);
+  console.log("target.class: " + target.class);
+  console.log("target.classlist: " + target.classList);
+  target.classList.add("bingo");
+  console.log("target.classList: " + target.classList);
+  if (target.class === undefined) {
+    target.class = "selected";
+  } else if (target.class === "selected") {
+    target.class = "unselected";
+  } else if (target.class === "unselected") {
+    target.class = "selected";
+  }
+  console.log(target.class);
+}
 
 function draw() {
   // disable filling
@@ -31,6 +56,7 @@ function draw() {
 
   let rnd = document.getElementById("round");
 
+  // not currently necessary because there are only two brushes being differentiated by radio checkboxes. Both this and the preceeding getElement
   let sqr = document.getElementById("square");
 
   if (mouseIsPressed) {
