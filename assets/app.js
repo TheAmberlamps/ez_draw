@@ -10,7 +10,8 @@ const paths = [];
 let currentPath = [];
 
 const shapes = [];
-let currentShape = [];
+
+let sqarOrigin = null;
 
 let colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
@@ -20,25 +21,9 @@ const circ = document.getElementById("circ");
 
 // highlight function to let you know what brush / shape you're currently using ~~~ ACTUALLY, this should be used primarily as a tool selector and THEN as a way to highlight that selection.
 function hiLite() {
-  console.log("Clicked me!");
-  // let old = document.querySelectorAll(".selected");
-  // console.log(old);
+  // toggle target active / inactive
   let target = event.target;
-  console.log("target: " + target);
-  console.log("target.class: " + target.class);
-  console.log("target.classlist: " + target.classList);
-  target.classList.add("bingo");
-  console.log("target.classList: " + target.classList);
-  target.classList.remove("bingo");
-  console.log("target.classList: " + target.classList);
-  if (target.class === undefined) {
-    target.class = "selected";
-  } else if (target.class === "selected") {
-    target.class = "unselected";
-  } else if (target.class === "unselected") {
-    target.class = "selected";
-  }
-  console.log(target.class);
+  console.log(target.id);
 }
 
 function draw() {
@@ -62,6 +47,21 @@ function draw() {
   let sqr = document.getElementById("square");
 
   if (mouseIsPressed) {
+    // busted square function. activeElement doesn't work here, going to have to use another method to identify active tool.
+    // also review the scope, may well want to nest mouseIsPressed inside of conditionals.
+    if (document.activeElement.id === "sqar") {
+      if (sqarOrigin === null) {
+        sqarOrigin = [mouseX, mouseY];
+      } else {
+        fill(rgbaCol);
+        rect(
+          sqarOrigin[0],
+          sqarOrigin[1],
+          mouseX - sqarOrigin[0],
+          mouseY - sqarOrigin[1]
+        );
+      }
+    }
     // store mouse location
     const point = {
       x: mouseX,
