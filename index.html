@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     />
     <link rel="stylesheet" href="assets/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
@@ -35,21 +35,23 @@
         </li>
         <p>Brushes:</p>
         <li>
-          <form action="" method="get" id="brushes">
-            <label for="round">Round brush</label>
-            <input type="radio" id="round" name="brush" checked="checked" />
-            <label for="square">Square brush</label>
-            <input type="radio" id="square" name="brush" />
-          </form>
+          <label for="round">Round brush</label>
+          <button id="round" class="tool tool-selected" /><i class="fas fa-paint-brush" onclick="hiLite()"></i>
+        </li>
+        <li>
+          <label for="square">Square brush</label>
+          <button id="square" class="tool" /><i
+            class="fas fa-brush" onclick="hiLite()"
+          ></i></button>
         </li>
         <p>Shapes:</p>
         <li>
           <label for="sqar">Square</label>
-          <button id="sqar" class="inactive" onclick="hiLite()">&#9744;</button>
+          <button id="sqar" class="tool" onclick="hiLite()">&#9744;</button>
         </li>
         <li>
           <label for="circ">Circle</label>
-          <button id="circ" class="inactive" onclick="hiLite()">&#9711;</button>
+          <button id="circ" class="tool" onclick="hiLite()">&#9711;</button>
         </li>
         <li>
           <button id="clear"><i class="fa fa-trash"></i></button>

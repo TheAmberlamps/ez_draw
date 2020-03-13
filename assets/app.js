@@ -9,17 +9,35 @@ function setup() {
 const paths = [];
 let currentPath = [];
 
-const shapes = [];
-
 let sqarOrigin = null;
 
-let colorInput = document.getElementById("color");
+let tool = 0;
+let tools = document.querySelectorAll(".tool");
+
+const colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
 const clear = document.getElementById("clear");
 const opacity = document.getElementById("opacity");
-const circ = document.getElementById("circ");
+
+for (var i = 0; i < tools.length; i++) {
+  tools[i].onclick = (function(id) {
+    return function() {
+      setTool(id);
+    };
+  })(i);
+}
+
+function setTool(id) {
+  tool = id;
+  for (var i = 0; i < tools.length; i++) {
+    tools[i].classList.remove("tool-selected");
+    if (id == i) tools[i].classList.add("tool-selected");
+    console.log(tool);
+  }
+}
 
 // highlight function to let you know what brush / shape you're currently using ~~~ ACTUALLY, this should be used primarily as a tool selector and THEN as a way to highlight that selection.
+// defunct now because of setTool function.
 function hiLite() {
   // toggle target active / inactive
   let target = event.target;
@@ -40,11 +58,6 @@ function draw() {
     "," +
     opacity.value +
     ")";
-
-  let rnd = document.getElementById("round");
-
-  // not currently necessary because there are only two brushes being differentiated by radio checkboxes. Both this and the preceeding getElement
-  let sqr = document.getElementById("square");
 
   if (mouseIsPressed) {
     // busted square function. activeElement doesn't work here, going to have to use another method to identify active tool.
@@ -67,8 +80,7 @@ function draw() {
       x: mouseX,
       y: mouseY,
       color: rgbaCol,
-      weight: weight.value,
-      brush: rnd.checked
+      weight: weight.value
     };
     console.log(point.color);
     currentPath.push(point);
@@ -80,7 +92,6 @@ function draw() {
     path.forEach(point => {
       stroke(point.color);
       strokeWeight(point.weight);
-      // setAlpha(point.opacity);
       if (point.brush === true) {
         strokeCap(ROUND);
         strokeJoin(ROUND);
