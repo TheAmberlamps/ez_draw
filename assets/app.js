@@ -12,13 +12,14 @@ let currentPath = [];
 let sqarOrigin = null;
 
 let tool = 0;
-let tools = document.querySelectorAll(".tool");
+const tools = document.querySelectorAll(".tool");
 
 const colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
 const clear = document.getElementById("clear");
 const opacity = document.getElementById("opacity");
 
+// set current tool
 for (var i = 0; i < tools.length; i++) {
   tools[i].onclick = (function(id) {
     return function() {
@@ -31,7 +32,7 @@ function setTool(id) {
   tool = id;
   for (var i = 0; i < tools.length; i++) {
     tools[i].classList.remove("tool-selected");
-    if (id == i) tools[i].classList.add("tool-selected");
+    if (id === i) tools[i].classList.add("tool-selected");
     console.log(tool);
   }
 }
@@ -48,7 +49,8 @@ function draw() {
   // disable filling
   noFill();
 
-  var rgbaCol =
+  // converts hex colour codes to RGBA
+  let rgbaCol =
     "rgba(" +
     parseInt(colorInput.value.slice(-6, -4), 16) +
     "," +
@@ -60,8 +62,19 @@ function draw() {
     ")";
 
   if (mouseIsPressed) {
-    // busted square function. activeElement doesn't work here, going to have to use another method to identify active tool.
-    // also review the scope, may well want to nest mouseIsPressed inside of conditionals.
+    // store mouse location and other information for brushes.
+    if (tool === 0 || 1) {
+      const point = {
+        x: mouseX,
+        y: mouseY,
+        color: rgbaCol,
+        weight: weight.value,
+        toolId: tool
+      };
+      console.log(point.color);
+      currentPath.push(point);
+    }
+    // square tool. Still screwy (for example, filling shapes drawn with brushes) but making progress. May have to rewrite.
     if (tool === 2) {
       if (sqarOrigin === null) {
         sqarOrigin = [mouseX, mouseY];
@@ -75,19 +88,6 @@ function draw() {
         );
       }
     }
-    // store mouse location
-
-    if (tool === 0 || 1) {
-      const point = {
-        x: mouseX,
-        y: mouseY,
-        color: rgbaCol,
-        weight: weight.value,
-        toolId: tool
-      };
-      console.log(point.color);
-      currentPath.push(point);
-    }
   }
 
   paths.forEach(path => {
@@ -96,6 +96,7 @@ function draw() {
     path.forEach(point => {
       stroke(point.color);
       strokeWeight(point.weight);
+      //  different join methods for different brushes
       if (point.toolId === 0) {
         strokeCap(ROUND);
         strokeJoin(ROUND);
@@ -117,6 +118,8 @@ clear.addEventListener("click", () => {
 });
 
 function mousePressed() {
+  // seriously consider moving sqarOrigin reset to the end of the square tool function.
+  sqarOrigin = null;
   currentPath = [];
   paths.push(currentPath);
 }
