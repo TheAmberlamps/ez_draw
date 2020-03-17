@@ -62,7 +62,7 @@ function draw() {
   if (mouseIsPressed) {
     // busted square function. activeElement doesn't work here, going to have to use another method to identify active tool.
     // also review the scope, may well want to nest mouseIsPressed inside of conditionals.
-    if (document.activeElement.id === "sqar") {
+    if (tool === 2) {
       if (sqarOrigin === null) {
         sqarOrigin = [mouseX, mouseY];
       } else {
@@ -76,14 +76,18 @@ function draw() {
       }
     }
     // store mouse location
-    const point = {
-      x: mouseX,
-      y: mouseY,
-      color: rgbaCol,
-      weight: weight.value
-    };
-    console.log(point.color);
-    currentPath.push(point);
+
+    if (tool === 0 || 1) {
+      const point = {
+        x: mouseX,
+        y: mouseY,
+        color: rgbaCol,
+        weight: weight.value,
+        toolId: tool
+      };
+      console.log(point.color);
+      currentPath.push(point);
+    }
   }
 
   paths.forEach(path => {
@@ -92,11 +96,12 @@ function draw() {
     path.forEach(point => {
       stroke(point.color);
       strokeWeight(point.weight);
-      if (point.brush === true) {
+      if (point.toolId === 0) {
         strokeCap(ROUND);
         strokeJoin(ROUND);
         vertex(point.x, point.y);
-      } else {
+      }
+      if (point.toolId === 1) {
         strokeCap(SQUARE);
         strokeJoin(MITER);
         square(point.x, point.y, point.weight);
