@@ -33,7 +33,6 @@ function setTool(id) {
   for (var i = 0; i < tools.length; i++) {
     tools[i].classList.remove("tool-selected");
     if (id === i) tools[i].classList.add("tool-selected");
-    console.log(tool);
   }
 }
 
@@ -71,7 +70,6 @@ function draw() {
         weight: weight.value,
         toolId: tool
       };
-      console.log(point.color);
       currentPath.push(point);
     }
     // square tool. Still screwy (for example, filling shapes drawn with brushes) but making progress. May have to rewrite.
@@ -86,6 +84,8 @@ function draw() {
           mouseX - sqarOrigin[0],
           mouseY - sqarOrigin[1]
         );
+        // very cool effect, but not what i'm looking for.
+        // sqarOrigin = null;
       }
     }
   }
@@ -118,7 +118,6 @@ clear.addEventListener("click", () => {
 });
 
 function mousePressed() {
-  // seriously consider moving sqarOrigin reset to the end of the square tool function.
   sqarOrigin = null;
   currentPath = [];
   paths.push(currentPath);
