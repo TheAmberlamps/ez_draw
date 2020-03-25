@@ -1,13 +1,19 @@
 function setup() {
   // create a canvas which is full width and height
-  createCanvas(window.innerWidth, window.innerHeight);
+  createCanvas(window.innerWidth - 82, window.innerHeight);
 
   // Add a white background to the canvas
   background(255);
+
+  // seems to be creating a secondary canvas with display: none. weird stuff
+  graphic = createGraphics(window.innerWidth, window.innerHeight);
+  graphic.background(255);
 }
 
 const paths = [];
 let currentPath = [];
+
+// let shapes = null;
 
 let sqarOrigin = null;
 
@@ -18,6 +24,17 @@ const colorInput = document.getElementById("color");
 const weight = document.getElementById("weight");
 const clear = document.getElementById("clear");
 const opacity = document.getElementById("opacity");
+
+let rgbaCol =
+  "rgba(" +
+  parseInt(colorInput.value.slice(-6, -4), 16) +
+  "," +
+  parseInt(colorInput.value.slice(-4, -2), 16) +
+  "," +
+  parseInt(colorInput.value.slice(-2), 16) +
+  "," +
+  opacity.value +
+  ")";
 
 // set current tool
 for (var i = 0; i < tools.length; i++) {
@@ -48,7 +65,6 @@ function draw() {
   // disable filling
   noFill();
 
-  // converts hex colour codes to RGBA
   let rgbaCol =
     "rgba(" +
     parseInt(colorInput.value.slice(-6, -4), 16) +
@@ -88,6 +104,8 @@ function draw() {
         // sqarOrigin = null;
       }
     }
+  } else {
+    onMouseQuit();
   }
 
   paths.forEach(path => {
@@ -121,4 +139,17 @@ function mousePressed() {
   sqarOrigin = null;
   currentPath = [];
   paths.push(currentPath);
+}
+
+function onMouseQuit() {
+  if (sqarOrigin != null) {
+    graphic.fill(rgbaCol);
+    graphic.rect(
+      sqarOrigin[0],
+      sqarOrigin[1],
+      mouseX - sqarOrigin[0],
+      mouseY - sqarOrigin[1]
+    );
+    sqarOrigin = null;
+  }
 }
